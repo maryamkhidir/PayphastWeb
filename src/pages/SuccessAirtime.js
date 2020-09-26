@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { makeStyles, InputBase, AppBar, IconButton, Toolbar, MenuIcon, Typography, Button, Avatar, List, ListItem, ListItemIcon, ListItemText, Drawer, Hidden, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Tabs, Tab, Box, TableFooter } from '@material-ui/core';
+import { makeStyles, InputBase, AppBar, IconButton, Toolbar, MenuIcon, Typography, Button, Avatar, List, ListItem, ListItemIcon, ListItemText, Drawer, Hidden, TableContainer, TableHead, TableRow, Paper, Tabs, Tab, Box, TableFooter } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import SearchIcon from '@material-ui/icons/Search';
 import {HomeIcon, SettingsIcon, TransIcon, CardIcon} from './svgIcons'
+import Select from 'react-select';
 import {TopBar, SideMenu} from './TopBar';
+import { useHistory } from "react-router-dom";
+
 
 const Images = require('./imports').Images
 
@@ -12,6 +16,9 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontFamily: "Titillium",
   },
+  inputStyle:{color:'#212529', fontSize:16},
+  selectInput:{border:"1px solid #D9E1EC", flex:1, borderRadius:8, height:35, paddingLeft:15, paddingRight:15, color:'#212529', fontSize:24},
+  disabledInput:{backgroundColor:'#F8F8F9'},
   tableHead:{
     fontFamily:'Titillium', color:'#81838C', fontSize:14
   },
@@ -25,121 +32,51 @@ const useStyles = makeStyles({
     backgroundColor:'#FFF', display:'flex', borderRadius:40, width:48, height:48, justifyContent:'center', alignItems:'center' 
   },
   tabLabel:{
-    minWidth:'unset', fontFamily:'Titillium', fontSize:12, color:"#8484A5", borderRadius:15, border:'1px solid #D8DAE4', padding:"6px 14px", marginRight:10, marginLeft:10, minHeight:'unset'
+    minWidth:'unset', fontFamily:'Titillium', fontSize:16, color:"#656B71",  padding:"6px 14px", marginRight:10, marginLeft:10, minHeight:'unset', textTransform:'unset'
   },
   tabBody:{
     padding:0,
     paddingTop:20
   },
   indicator:{
-    display:'none'
+    backgroundColor:'#5531EE'
   },
   selectedTab:{
-    border: 'unset',
-    backgroundColor: '#5531EE',
-    color: '#FFF',
+    color: '#5531EE',
   }
 });
 
-
-const TableMenu = props => {
-  const classes = useStyles();
-  return (
-    <TableContainer>
-      <div style={{marginBottom:15, marginTop:10, display:'flex'}}>
-        <div style={styles.filterSearch}>
-          <InputBase
-          style={{paddingLeft:15}}
-            placeholder="Filter"
-          />
-          <div style={styles.transSearchIcon}>
-            <KeyboardArrowDownIcon style={{ color: "#81838C", width:24, height:24 }} />
-          </div>
-        </div>
-
-        <div style={styles.transSearch}>
-          <div style={styles.transSearchIcon}>
-            <SearchIcon style={{ color: "#81838C", width:17, height:17 }} />
-          </div>
-          <InputBase
-            placeholder="Search..."
-          />
-        </div>
-      </div>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.tableHead}>ID</TableCell>
-            <TableCell className={classes.tableHead}>Date</TableCell>
-            <TableCell className={classes.tableHead}>Amount</TableCell>
-            <TableCell className={classes.tableHead}>Fee</TableCell>
-            <TableCell className={classes.tableHead}>Type</TableCell>
-            <TableCell className={classes.tableHead}>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index}>
-              <TableCell  className={classes.tableBody} style={{fontWeight:'bold'}} component="th" scope="row">
-                {row.id}
-              </TableCell>
-              <TableCell className={classes.tableBody}>{row.date}</TableCell>
-              <TableCell className={classes.tableBody}>{row.amount}</TableCell>
-              <TableCell className={classes.tableBody}>{row.fee}</TableCell>
-              <TableCell className={classes.tableBody}>{row.type}</TableCell>
-              {(row.status) == "Success" ? 
-                <TableCell className={classes.tableBody} style={{color:'#06A561', textAlign:'center'}}>
-                  <div style={{padding: '2px 8px', backgroundColor:'#C4F8E2', borderRadius:4}}>
-                    {row.status}
-                  </div>
-                </TableCell> :
-                <TableCell className={classes.tableBody} style={{color:'#FF3C30', textAlign:'center'}}>
-                <div style={{padding: '2px 8px', backgroundColor:'#F8C7C4', borderRadius:4}}>
-                  {row.status}
-                </div>
-              </TableCell> 
-              }
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div style={{display:'flex', marginBottom:30, marginTop:30, justifyContent:'space-between'}}>
-            <div  style={{display:'flex',}}>
-          {['⟵', 1,2,3,4,5,6, '...', 24, '⟶'].map( (value, ind) => (
-            (value == 2) ? <div key={ind} style={{width:36, height:36, display:'flex', color:'#5531EE', alignItems:'center', justifyContent:'center', backgroundColor:'#ECF2FF', borderRadius:4}}>{value}</div> : <div key={ind} style={{width:36, height:36, color:'#5A607F', display:'flex', borderRadius:4, alignItems:'center', justifyContent:'center',}}>{value}</div>           
-          ))}
-          </div>
-          <div style={{color:'#5A607F', display:'flex', borderRadius:4, alignItems:'center', justifyContent:'center',}} >274 Results</div>
-      </div>
-    </TableContainer>
-  );
-}
-
-function createData(id, date, amount, fee, type, status) {
-  return { id, date, amount, type, fee, status };
-}
-
-const rows = [
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Failed'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
-  createData('889322353992', '24/05/2020  10:29am', 'N124,932.97', 'N38.92', 'Bill Payment', 'Success'),
+const options = [
+  { value: 'airtel', label: 'Airtel Nigeria' },
+  { value: 'mtn', label: 'MTN Nigeria' },
+  { value: 'glo', label: 'Glo Nigeria' },
 ];
 
+const Forms = props => {
+  const classes = useStyles();
+  const history = useHistory();
+  return(
+    <div style={{flex:1,}}>
+      <div style={{display:'flex', justifyContent:'center'}}>
+        <div style={styles.successbg}>
+          <img src={Images.success} style={{width:152, height:152, marginTop:80}} />
+        </div>
+      </div>
+        <div style={{fontFamily:'Titillium', fontSize:24, fontWeight:'bold', marginBottom:13, color:'#212529', textAlign:'center', marginTop:30}}>Airtime Purchase Successful!</div>
+        <div style={{fontFamily:'Titillium', color:'#656B71', fontSize:16, textAlign:'center', lineHeight:'26px'}}>You sent  “N2000” airtime to “ 09039478724” {<br/>} Enjoy the awesome features on PayPhast</div>
+        <div onClick={() => history.push('/transactions')} style={{justifyContent:'center', marginTop:40, alignItems:'center', display:'flex', height:48, fontFamily: "Titillium", color: '#FFF', fontSize: 18, backgroundColor:'#5531EE', borderRadius:6, cursor:'pointer'}}>View Transaction Detail</div>
+        <div onClick={() => history.push('/')} style={{justifyContent:'center', marginTop:12, marginBottom:30, alignItems:'center', display:'flex', height:48, fontFamily: "Titillium", color: '#242131', fontSize: 18, border:'1px solid #81838C', borderRadius:6, cursor:'pointer'}}>View Dashboard</div>
+    </div>
+  )
+}
 
-export default class Transactions extends Component {
+
+export default class SuccessAirtime extends Component {
   constructor(props) {
     super(props)
     this.state = {
       mobileOpen:false,
-      tabValue: 0
+      selectedValue: options[0]
     };
     this.handleChange = this.handleChange.bind(this);
   };
@@ -148,8 +85,8 @@ export default class Transactions extends Component {
     this.setState({mobileOpen: !this.state.mobileOpen });
   };
 
-  handleChange = (event, newValue) => {
-    this.setState({tabValue: newValue});
+  handleChange = (value) => {
+    this.setState({selectedValue: value});
   };
 
   render() {
@@ -193,7 +130,7 @@ export default class Transactions extends Component {
                 keepMounted: true, // Better open performance on mobile.
               }}
             >
-              <SideMenu active="transactions" />
+              <SideMenu />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -202,16 +139,31 @@ export default class Transactions extends Component {
               style={{width:240}}
               open
             >
-              <SideMenu active="transactions" />
+              <SideMenu />
             </Drawer>
           </Hidden>
           <main style={{width:'100%'}}>
             <div style={styles.toolbar} />{/* For the header */}
             <div style={styles.content}>
-              <div style={{fontSize:24, fontWeight:'bold'}}>Transactions</div>
+              <div style={{fontSize:14, color:'#5A607F', cursor:'pointer', marginBottom:10}}>← Back</div>
+              <div style={{fontSize:24, fontWeight:'bold'}}>Buy Airtime</div>
               <section style={styles.section}>
                 <div style={styles.transactions}>
-                  <TableMenu />
+                  <div>
+                    <Forms selectedValue={this.state.selectedValue} handleChange={this.handleChange} />
+                  </div>
+                </div>
+                <div style={styles.summary}>
+                  <img src={Images.bg} style={{height: "auto", width: "100%"}} />
+                  <div style={{paddingLeft:20, paddingRight:20, marginTop:50,  marginBottom:50}}>
+                    <div style={{fontSize:53, marginBottom:35, fontFamily:'Titillium-Bold', fontWeight:'700', lineHeight:"56px", color:'#242131'}}>
+                      Payment just got <span style={{color:'#896CFF'}}>phaster</span>
+                    </div>
+                    <div style={{fontSize:18, color:'#242131', lineHeight:"32px"}}>
+                    Certain things are hard; making payments shouldn't be one of them
+                    </div>
+                    <div style={{justifyContent:'center', alignItems:'center', display:'flex', width:116, height:48, fontFamily: "Titillium", color: '#FFF', fontSize: 16, backgroundColor:'#9894AB', borderRadius:5, marginTop:36}}>Learn more</div>
+                  </div>
                 </div>
               </section>
             </div>
@@ -244,6 +196,7 @@ const styles = {
     fontSize: 14,
   },
   section:{
+    display:'flex',
     marginTop:27,
   },
   atmcard:{
@@ -267,20 +220,39 @@ const styles = {
   },
   transactions:{
     padding: "20px 25px",
+    width:525,
+    flex: 3,
     backgroundColor: '#FFF',
     borderRadius:4,
-    boxShadow:'0px 1px 4px rgba(21, 34, 50, 0.08)'
+    boxShadow:'0px 1px 4px rgba(21, 34, 50, 0.08)',
+    height: 'fit-content'
   },
   summary:{
-    padding: "20px 25px",
-    flexGrow: 1,
+    flex: 2,
     backgroundColor: '#FFF',
     borderRadius:4,
-    marginLeft: 20,
+    marginLeft: 25,
     boxShadow:'0px 1px 4px rgba(21, 34, 50, 0.08)'
+  },
+  successbg:{
+    width:350,
+    height:310,
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundImage:`url(${Images.successbg})`,
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
   },
   active:{
     color:'#FFF'
+  },
+  form:{
+    width: "calc(50% - 24px)",
+    paddingLeft:12,
+    paddingRight:12,
+    marginBottom:20
   },
   avatar: {
     width: 39,

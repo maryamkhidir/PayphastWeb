@@ -3,6 +3,7 @@ import { makeStyles, InputBase, AppBar, IconButton, Toolbar, MenuIcon, Typograph
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import SearchIcon from '@material-ui/icons/Search';
 import {HomeIcon, SettingsIcon, TransIcon, CardIcon} from './svgIcons'
+import {TopBar, SideMenu} from './TopBar';
 
 const Images = require('./imports').Images
 
@@ -160,41 +161,6 @@ function TabPanel(props) {
 }
 
 
-const SideMenu = props => {
-  const classes = useStyles();
-  return (
-  <div>
-    <List style={styles.leftMenu}>
-        <ListItem button style={{marginBottom:5, borderRadius:4}}>
-          <ListItemIcon><HomeIcon color="#81838C" /></ListItemIcon>
-          <ListItemText primary='Dashboard' classes={{
-            primary:classes.primary
-          }}  style={styles.avatarName} />
-        </ListItem>
-        <ListItem button style={{ marginBottom:5, borderRadius:4}}>
-          <ListItemIcon><TransIcon color="#81838C" /></ListItemIcon>
-          <ListItemText primary='Transactions' classes={{
-            primary:classes.primary
-          }} style={styles.avatarName} />
-        </ListItem>
-        <ListItem button style={{marginBottom:5, borderRadius:4}}>
-          <ListItemIcon><CardIcon color="#81838C" /></ListItemIcon>
-          <ListItemText primary='Saved Cards' classes={{
-            primary:classes.primary
-          }} style={styles.avatarName} />
-        </ListItem>
-        <ListItem button style={{backgroundColor:'#5531EE',marginBottom:5, borderRadius:4}}>
-          <ListItemIcon><SettingsIcon color="#FFF" /></ListItemIcon>
-          <ListItemText primary='Settings' classes={{
-            primary:classes.primary
-          }} style={styles.avatarName, styles.active} />
-        </ListItem>
-    </List>
-  </div>
-)
-}
-
-
 
 export default class Profile extends Component {
   constructor(props) {
@@ -229,17 +195,7 @@ export default class Profile extends Component {
                 placeholder="Search for cable providers, network"
               />
             </div>
-            <div style={styles.menu}>
-              <Typography style={styles.menuItem}>
-              Buy Airtime
-              </Typography>
-              <Typography style={styles.menuItem}>
-              Pay Cable TV
-              </Typography>
-              <Typography style={styles.menuItem}>
-              Fund Betting wallet
-              </Typography>
-            </div>
+            <TopBar />
             <div style={{display:'flex', alignItems:'center', marginLeft:90}}>
               <div style={{display:'flex', alignItems:'center'}}>
                 <Avatar src={Images.avatar} style={styles.avatar} />
@@ -265,7 +221,7 @@ export default class Profile extends Component {
                 keepMounted: true, // Better open performance on mobile.
               }}
             >
-              <SideMenu />
+              <SideMenu active="settings" />
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -274,7 +230,7 @@ export default class Profile extends Component {
               style={{width:240}}
               open
             >
-              <SideMenu />
+              <SideMenu active="settings" />
             </Drawer>
           </Hidden>
           <main style={{width:'100%'}}>

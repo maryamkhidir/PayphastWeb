@@ -45,3 +45,7 @@ code {
   margin-top: 68px;
   width: 240px;
 }
+
+.css-yk16xz-control{
+  min-height: 48px !important;
+}
