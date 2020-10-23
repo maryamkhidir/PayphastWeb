@@ -4,6 +4,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import SearchIcon from '@material-ui/icons/Search';
 import {HomeIcon, SettingsIcon, TransIcon, CardIcon} from './svgIcons'
 import {TopBar, SideMenu} from './TopBar';
+import { useHistory } from "react-router-dom";
 
 const Images = require('./imports').Images
 
@@ -95,8 +96,10 @@ const Summary = props => {
 
 const Service = props => {
   const classes = useStyles();
+  const history = useHistory();
+  let pathh = (props.navigate) ? '/'+props.navigate : '/';
   return(
-    <div style={{height:110, flex:3, maxWidth:200, marginRight:20, backgroundColor:props.color, borderRadius:12, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
+    <div onClick={() => history.push(pathh)} style={{height:110, flex:3, cursor:'pointer', maxWidth:200, marginRight:20, backgroundColor:props.color, borderRadius:12, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center' }}>
       <div className={classes.imgCircle}><span style={{height:24, display:'block', width:24, backgroundImage:`url(${Images[props.image]})`, backgroundSize:'contain', backgroundPosition:'center', backgroundRepeat:'no-repeat' }} /></div>
       <div style={{fontFamily:'Titillium', marginTop:10, color:props.titleColor, fontSize:16, fontWeight:'bold'}} >{props.title}</div>
     </div>
@@ -294,9 +297,9 @@ export default class Home extends Component {
                 <div style={styles.services}>
                   <Title label="Top Services" />
                   <div style={{display:'flex', justifyContent:'space-between'}}>
-                    <Service color="#F4F2FF" title="Buy Airtime" titleColor="#242131" image="phone" />
-                    <Service color="#3C66FF" title="Pay Cable TV" titleColor="#FFF" image="phone" />
-                    <Service color="#00B856" title="Fund Bet Wallet" titleColor="#FFF" image="game" />
+                    <Service color="#F4F2FF" title="Buy Airtime" titleColor="#242131" image="phone" navigate="buy-airtime" />
+                    <Service color="#3C66FF" title="Pay Cable TV" titleColor="#FFF" image="phone" navigate="pay-cable" />
+                    <Service color="#00B856" title="Fund Bet Wallet" titleColor="#FFF" image="game" navigate="" />
                   </div>
                 </div>
               </section>
